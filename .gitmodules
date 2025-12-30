@@ -1,0 +1,3 @@
+[submodule "src/omni-engine"]
+	path = src/omni-engine
+	url = https://github.com/Airwaves1/omni-engine.git
