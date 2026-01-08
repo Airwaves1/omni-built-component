@@ -1,7 +1,7 @@
 <template>
   <div class="engine-page">
     <div class="header">
-      <button class="back-btn" @click="goBack">← 返回</button>
+      <button class="back-btn" @click="goBack">← Back</button>
       <h2 class="page-title">{{ projectName }}</h2>
     </div>
     <div class="engine-wrapper">
@@ -26,7 +26,6 @@ const engineRef = ref()
 
 const projectId = computed(() => route.params.id)
 
-// 从路由 state 获取项目配置
 const project = computed(() => {
   if (window.history.state && window.history.state.project) {
     return window.history.state.project
@@ -46,6 +45,17 @@ const projectAssets = computed(() => {
   return project.value ? project.value.assets : null
 })
 
+const handleKeyDown = (event) => {
+  if (event.altKey && event.key.toLowerCase() === 'p') {
+    event.preventDefault()
+    if (engineRef.value) {
+      engineRef.value.loadAssets(projectId.value, {
+        ifc: '/data/toilet/toilet.ifc'
+      })
+    }
+  }
+}
+
 onMounted(async () => {
   if (!project.value) {
     console.warn('[EnginePage] Project not found, redirecting to home')
@@ -58,18 +68,19 @@ onMounted(async () => {
   if (engineRef.value && projectAssets.value) {
     engineRef.value.loadAssets(projectId.value, projectAssets.value)
   }
+
+  window.addEventListener('keydown', handleKeyDown)
 })
 
 onBeforeUnmount(async () => {
-  // 清理引擎组件资源（会触发所有 ViewPanel 的清理）
+  window.removeEventListener('keydown', handleKeyDown)
+
   if (engineRef.value && engineRef.value.dispose) {
     await engineRef.value.dispose()
   }
   
-  // 确保资源被清理
   if (projectId.value) {
     const assetsManager = AssetsManager.getInstance()
-    // 检查资源是否还存在，如果存在则清理
     if (assetsManager.getAsset(projectId.value)) {
       assetsManager.removeAsset(projectId.value)
     }

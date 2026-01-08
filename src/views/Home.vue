@@ -24,7 +24,7 @@ const projects = [
   {
     id: 'scaffold',
     name: 'Scaffold',
-    description: '脚手架项目 - IFC + Splat + Point Cloud',
+    description: 'Scaffold Project - IFC + Splat + Point Cloud',
     config: {
       splat: {
         position: [2.96054987, 1.31907451, 1.03753001],
@@ -36,6 +36,15 @@ const projects = [
       ifc: '/data/scaffold/clp.ifc',
       splat: '/data/scaffold/clp.ply',
       pointcloud: '/data/scaffold/metadata.json'
+    }
+  },
+  {
+    id: 'toilet',
+    name: 'Toilet',
+    description: 'Toilet Project - IFC + Splat + Point Cloud',
+    assets: {
+      ifc: '/data/toilet/toilet.ifc',
+      pointcloud: '/data/toilet/metadata.json'
     }
   }
 ]
